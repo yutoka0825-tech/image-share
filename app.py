@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, send_from_directory
 import os
 import uuid
 
@@ -7,38 +7,43 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+
 @app.route("/")
-def pc():
-    room_id = str(uuid.uuid4())[:8]
-    return render_template("pc.html", room=room_id)
+def index():
+
+    images = []
+
+    if os.path.exists(UPLOAD_FOLDER):
+        images = os.listdir(UPLOAD_FOLDER)
+        images.reverse()
+
+    room_id = "main"
+
+    return render_template(
+        "pc.html",
+        room=room_id,
+        images=images
+    )
+
 
 @app.route("/upload/<room>", methods=["GET", "POST"])
 def upload(room):
 
     if request.method == "POST":
 
+        if "image" not in request.files:
+            return "画像が選択されていません"
+
         file = request.files["image"]
 
-        filename = str(uuid.uuid4()) + "_" + file.filename
-        path = os.path.join(UPLOAD_FOLDER, filename)
+        if file.filename == "":
+            return "画像が選択されていません"
 
-        file.save(path)
+        filename = 
+str(uuid.uuid4()) + os.path.splitext(file.filename)[1]
 
-        return f"""
-<html>
-<head>
-<meta charset="utf-8">
-<meta http-equiv="refresh" content="2;url=/upload/{room}">
-</head>
-<body style="text-align:center;font-size:40px;">
-✅送信完了！<br><br>
-次の画像を選択できます
-</body>
-</html>
-"""
+        file.save(os.path.join(UPLOAD_FOLDER, filename))
 
-    return render_template("mobile.html", room=room)
+        return "画像がアップロードされました"
 
-if __name__ == "__main__":
-    app.run(debug=True)
-    
+    return render_template("upload.html", room=room) 

@@ -7,40 +7,35 @@
 </head>
 
 <body style="
-    text-align:center;
-    font-family:sans-serif;
-    margin-top:50px;
+text-align:center;
+font-family:sans-serif;
+padding-top:80px;
 ">
 
-<h1 style="font-size:48px;">
-<font color=red>
-📷 画像送信
-</font>
+<h1 style="font-size:50px;">
+📷画像送信
 </h1>
 
 <form method="POST" enctype="multipart/form-data">
 
-    <input
-        type="file"
-        name="image"
-        style="font-size:30px;"
-    >
+<input
+type="file"
+name="image"
+accept="image/*"
+required
+style="font-size:30px;"
+>
 
-    <br><br><br>
+<br><br>
 
-    <button
-        type="submit"
-        style="
-            font-size:32px;
-            padding:20px 40px;
-            border-radius:15px;
-            background:#0078d7;
-            color:white;
-            border:none;
-        "
-    >
-        送信
-    </button>
+<button
+type="submit"
+style="
+font-size:30px;
+padding:15px 40px;
+">
+送信
+</button>
 
 </form>
 
