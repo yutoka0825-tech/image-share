@@ -6,7 +6,11 @@
 <title>Image Share</title>
 </head>
 
-<body style="font-family:sans-serif;text-align:center;">
+<body style="
+font-family:sans-serif;
+text-align:center;
+background:#f5f5f5;
+">
 
 <h1 style="font-size:48px;">
 📷 スマホでQRを読み取ってください
@@ -18,15 +22,17 @@ width="400"
 height="400"
 >
 
-<p style="font-size:28px;">
+<p style="font-size:30px;">
 画像を送信してください
 </p>
 
 <hr>
 
-<h2 style="font-size:36px;">
+<h2 style="font-size:42px;">
 受信画像一覧
 </h2>
+
+{% if images %}
 
 <div style="
 display:flex;
@@ -37,23 +43,44 @@ gap:20px;
 
 {% for image in images %}
 
-<div>
+<div style="
+background:white;
+padding:10px;
+border-radius:10px;
+box-shadow:0 2px 8px rgba(0,0,0,0.2);
+">
 
 <img
 src="/uploads/{{ image }}"
 style="
-width:250px;
-height:250px;
-object-fit:cover;
-border:1px solid #ccc;
-border-radius:10px;
-">
+max-width:300px;
+max-height:300px;
+border-radius:8px;
+"
+>
+
+<br><br>
+
+<span style="font-size:16px;">
+{{ image }}
+</span>
 
 </div>
 
 {% endfor %}
 
 </div>
+
+{% else %}
+
+<p style="
+font-size:32px;
+color:#666;
+">
+まだ画像は送信されていません
+</p>
+
+{% endif %}
 
 </body>
 </html>
