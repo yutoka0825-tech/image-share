@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title>Image Share</title>
+</head>
+<body style="text-align:center;font-family:sans-serif">
+
+<h1>スマホでQRを読み取ってください</h1>
+
+<img
+src="https://api.qrserver.com/v1/create-qr-code/?size=300x300&data=https://handed-usual-dweeb.ngrok-free.app/upload/{{ room }}"
+alt="QR Code">
+
+<p>
+https://handed-usual-dweeb.ngrok-free.app/upload/{{ room }}
+</p>
+
+<p>ルームID: {{ room }}</p>
+
+</body>
+</html>
