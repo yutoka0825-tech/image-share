@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, send_from_directory
+from flask import Flask, render_template, request, send_from_directory, jsonify
 import os
 import uuid
 
@@ -6,6 +6,7 @@ app = Flask(__name__)
 
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
+
 
 @app.route("/")
 def index():
@@ -23,6 +24,7 @@ def index():
         room=room,
         images=images
     )
+
 
 @app.route("/upload/<room>", methods=["GET", "POST"])
 def upload(room):
@@ -46,19 +48,33 @@ def upload(room):
 
         file.save(filepath)
 
-        return """
+        return f"""
 <!DOCTYPE html>
 <html>
 <head>
 <meta charset="utf-8">
+<meta http-equiv="refresh" content="2;url=/upload/{room}">
+<title>送信完了</title>
 </head>
-<body>
+
+<body style="
+text-align:center;
+font-family:sans-serif;
+padding-top:100px;
+">
+
 <h1>✅送信完了！</h1>
+
+<p style="font-size:30px;">
+次の画像を送れます
+</p>
+
 </body>
 </html>
 """
 
     return render_template("mobile.html")
+
 
 @app.route("/uploads/<filename>")
 def uploaded_file(filename):
@@ -67,6 +83,36 @@ def uploaded_file(filename):
         filename
     )
 
+
+@app.route("/api/images")
+def api_images():
+
+    images = []
+
+    if os.path.exists(UPLOAD_FOLDER):
+        images = os.listdir(UPLOAD_FOLDER)
+        images.reverse()
+
+    return jsonify(images)
+
+
+@app.route("/api/status")
+def status():
+
+    images = []
+
+    if os.path.exists(UPLOAD_FOLDER):
+        images = os.listdir(UPLOAD_FOLDER)
+
+    return jsonify({
+        "count": len(images)
+    })
+
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(
+        host="0.0.0.0",
+        port=5000,
+        debug=True
+    )
     
