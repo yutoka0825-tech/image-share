@@ -7,9 +7,10 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
-
 @app.route("/")
 def index():
+
+    room = "main"
 
     images = []
 
@@ -17,14 +18,11 @@ def index():
         images = os.listdir(UPLOAD_FOLDER)
         images.reverse()
 
-    room_id = "main"
-
     return render_template(
         "pc.html",
-        room=room_id,
+        room=room,
         images=images
     )
-
 
 @app.route("/upload/<room>", methods=["GET", "POST"])
 def upload(room):
@@ -39,11 +37,36 @@ def upload(room):
         if file.filename == "":
             return "画像が選択されていません"
 
-        filename = 
-str(uuid.uuid4()) + os.path.splitext(file.filename)[1]
+        filename = str(uuid.uuid4()) + "_" + file.filename
 
-        file.save(os.path.join(UPLOAD_FOLDER, filename))
+        filepath = os.path.join(
+            UPLOAD_FOLDER,
+            filename
+        )
 
-        return "画像がアップロードされました"
+        file.save(filepath)
 
-    return render_template("upload.html", room=room) 
+        return """
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+</head>
+<body>
+<h1>✅送信完了！</h1>
+</body>
+</html>
+"""
+
+    return render_template("mobile.html")
+
+@app.route("/uploads/<filename>")
+def uploaded_file(filename):
+    return send_from_directory(
+        UPLOAD_FOLDER,
+        filename
+    )
+
+if __name__ == "__main__":
+    app.run(host="0.0.0.0", port=5000)
+    
