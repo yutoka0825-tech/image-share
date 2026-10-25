@@ -2,16 +2,18 @@
 <html>
 <head>
 <meta charset="utf-8">
+<meta http-equiv="refresh" content="5">
 <title>Image Share</title>
 </head>
-<body style="text-align:center;font-family:sans-serif;">
+
+<body style="font-family:sans-serif;text-align:center;">
 
 <h1 style="font-size:48px;">
-スマホでQRを読み取ってください
+📷 スマホでQRを読み取ってください
 </h1>
 
 <img
-    src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://handed-usual-dweeb.ngrok-free.dev/upload/{{ room }}"
+    src="https://api.qrserver.com/v1/create-qr-code/?size=400x400&data=https://image-share-n51o.onrender.com/upload/{{ room }}"
     width="400"
     height="400"
 >
@@ -20,5 +22,39 @@
 ルームID: {{ room }}
 </p>
 
+<h2 style="font-size:36px;">
+受信画像一覧
+</h2>
+
+<div style="
+display:flex;
+flex-wrap:wrap;
+justify-content:center;
+gap:20px;
+">
+
+{% for image in images %}
+
+<div>
+    <img
+        src="/uploads/{{ image }}"
+        style="
+        width:250px;
+        height:250px;
+        object-fit:cover;
+        border-radius:10px;
+        box-shadow:0 0 10px rgba(0,0,0,0.3);
+        "
+    >
+    <br>
+    {{ image }}
+</div>
+
+{% endfor %}
+
+</div>
+
 </body>
 </html>
+</html>
+
